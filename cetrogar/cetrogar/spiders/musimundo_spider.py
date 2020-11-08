@@ -20,11 +20,15 @@ class MusimundoSpider(scrapy.Spider):
         categoria = response.xpath('normalize-space(//div[@class="col span_9"]/div[@class="searchResultsGridComponent"]/div[@class="mus-results-title"]/h1/text())').get() 
         for product in response.xpath('//div[@class="productGrid clearfix"]/div/div/div/a'):
             
+            #title
+            title = product.xpath('normalize-space(.//div[@class="mus-pro-desc"]/p[@class="mus-pro-name"]/text())').get()
+
             #armo el precio
             moneda = product.xpath('.//div[@class="mus-pro-quotes"]/div/span[@class="mus-pro-quotes-currency strong"]/text()').get()
             entero = product.xpath('.//div[@class="mus-pro-quotes"]/div/span[@class="mus-pro-quotes-price strong"]/text()').get()
             decimal = product.xpath('.//div[@class="mus-pro-quotes"]/div/span[@class="mus-pro-quotes-decimals strong"]/text()').get()
-            
+            price = moneda + entero + decimal
+
             #fecha y hora de extraccion
             now = datetime.now()
             dt_format = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -33,9 +37,9 @@ class MusimundoSpider(scrapy.Spider):
             product_link = base_url + product.xpath('.//@href').get()
             
             yield {
-                'title': product.xpath('normalize-space(.//div[@class="mus-pro-desc"]/p[@class="mus-pro-name"]/text())').get(),
+                'title': title,
                 'categoria': categoria,
-                'price': moneda + entero + decimal,
+                'price': price,
                 'link': product_link, 
                 'fecha': dt_format
             }
