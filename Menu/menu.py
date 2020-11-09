@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 from sys import platform
+import scrapy
+from scrapy.crawler import CrawlerProcess
+import re
+from cetrogar_spider import CetrogarSpiderSpider
 
 class Menu:
     
@@ -26,6 +30,11 @@ class Menu:
             else:
                 self.__target = opcion.lower()
                 print(f'Buscando: {self.__target}')
+                ##-------------- ejecuto la busqueda
+                process = CrawlerProcess()
+                process.crawl(CetrogarSpiderSpider, target=self.__target)
+                process.start()
+                ##--------------
                 print(f'Tu búsqueda arrojó los siguientes resultados: ')
                 print('...')
                 self.__exportar()
