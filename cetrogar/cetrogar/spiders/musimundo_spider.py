@@ -61,6 +61,6 @@ class MusimundoSpider(scrapy.Spider):
             yield scrapy.Request(url=next_page, callback=self.parse_productos)
 
 # run spider
-process = CrawlerProcess()
-process.crawl(MusimundoSpider)
-process.start()
+# process = CrawlerProcess()
+# process.crawl(MusimundoSpider)
+# process.start()
