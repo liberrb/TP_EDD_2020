@@ -1,5 +1,7 @@
 import scrapy
+from scrapy.crawler import CrawlerProcess
 from datetime import datetime
+
 
 #para correrlo uso el comando scrapy runspider musimundo_spider.py -O output.json
 
@@ -7,12 +9,16 @@ class MusimundoSpider(scrapy.Spider):
     name = 'musimundo_spider'
     allowed_domain = ['www.musimundo.com']
     start_urls = ['https://www.musimundo.com/']
-    
+        
+    def __init__(self, prod=None, *args, **kwargs):
+        super(MusimundoSpider, self).__init__(*args, **kwargs) 
+        self.prod = prod
+
     def parse(self, response):
         links = response.xpath('//div[@class="navigationbarcollectioncomponent"]/div[@class="container"]/ul[@class="mus-navUl clear_fix"]/li/div/ul/li/div/div/h2/a')
         for link in links:
             link = link.xpath(".//@href").get()
-            
+
             yield response.follow(url=link, callback=self.parse_productos)
 
     def parse_productos(self, response):
@@ -27,8 +33,11 @@ class MusimundoSpider(scrapy.Spider):
             #moneda = product.xpath('.//div[@class="mus-pro-quotes"]/div/span[@class="mus-pro-quotes-currency strong"]/text()').get()
             entero = product.xpath('.//div[@class="mus-pro-quotes"]/div/span[@class="mus-pro-quotes-price strong"]/text()').get()
             decimal = product.xpath('.//div[@class="mus-pro-quotes"]/div/span[@class="mus-pro-quotes-decimals strong"]/text()').get()
-            valor = entero.replace('.', '') + decimal
-            price = float(valor.replace(',', '.'))
+            
+            price = 0
+            if entero:
+                valor = entero.replace('.', '') + decimal
+                price = float(valor.replace(',', '.'))
 
             #fecha y hora de extraccion
             now = datetime.now()
@@ -37,6 +46,7 @@ class MusimundoSpider(scrapy.Spider):
             #link de producto
             product_link = base_url + product.xpath('.//@href').get()
             
+            # print(self.prod) no llega el valor
             yield {
                 'title': title,
                 'categoria': categoria,
@@ -49,3 +59,8 @@ class MusimundoSpider(scrapy.Spider):
         if next_page:
             next_page = base_url+next_page
             yield scrapy.Request(url=next_page, callback=self.parse_productos)
+
+# run spider
+process = CrawlerProcess()
+process.crawl(MusimundoSpider)
+process.start()
