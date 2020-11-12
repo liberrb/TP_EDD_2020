@@ -4,7 +4,8 @@ from sys import platform
 import scrapy
 from scrapy.crawler import CrawlerProcess
 import re
-from cetrogar_spider import CetrogarSpiderSpider
+import run_spiders as spider
+import Procesador as proc
 
 class Menu:
     
@@ -12,7 +13,7 @@ class Menu:
         self.__salir = False
         self.__target = ''
         self.__so = 'Unknown'
-        self.__formatos_admitidos = {'1': 'csv', '2': 'json', '3': 'csv y json'}
+        self.__formatos_admitidos = {'1': 'csv', '2': 'json', '3': 'csv y json'} #desde el archivo de configuracion
         self.__formato_out = '-1'
         
     def ejecutar(self):
@@ -31,10 +32,12 @@ class Menu:
                 self.__target = opcion.lower()
                 print(f'Buscando: {self.__target}')
                 ##-------------- ejecuto la busqueda
-                process = CrawlerProcess()
-                process.crawl(CetrogarSpiderSpider, target=self.__target)
-                process.start()
+                #meter stop word a target
+                a = spider.spider_musimundo_results(self.__target, 3) #tiene que llegar tipo_busqueda desde la seleccion del menu
+                procesador = proc.Procesador(a, self.__target)
+                procesador.ImprimirArchivo( proc.TiposArchivos.HTML )
                 ##--------------
+                
                 print(f'Tu búsqueda arrojó los siguientes resultados: ')
                 print('...')
                 self.__exportar()
