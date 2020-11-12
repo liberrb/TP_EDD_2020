@@ -1,18 +1,18 @@
 import scrapy
-from scrapy.crawler import CrawlerProcess
 from datetime import datetime
+import re
+from spiders.items import Items
 
-
-#para correrlo uso el comando scrapy runspider musimundo_spider.py -O output.json
 
 class MusimundoSpider(scrapy.Spider):
     name = 'musimundo_spider'
     allowed_domain = ['www.musimundo.com']
     start_urls = ['https://www.musimundo.com/']
         
-    def __init__(self, prod=None, *args, **kwargs):
-        super(MusimundoSpider, self).__init__(*args, **kwargs) 
-        self.prod = prod
+    def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):
+        super().__init__(**kwargs)
+        self.target = target
+        self.tipo_busqueda = tipo_busqueda
 
     def parse(self, response):
         links = response.xpath('//div[@class="navigationbarcollectioncomponent"]/div[@class="container"]/ul[@class="mus-navUl clear_fix"]/li/div/ul/li/div/div/h2/a')
@@ -46,21 +46,29 @@ class MusimundoSpider(scrapy.Spider):
             #link de producto
             product_link = base_url + product.xpath('.//@href').get()
             
-            # print(self.prod) no llega el valor
-            yield {
-                'title': title,
-                'categoria': categoria,
-                'price': price,
-                'link': product_link, 
-                'fecha': dt_format
-            }
+            entra_yield = False
+            
+            if self.tipo_busqueda == 1:
+                pass #armar el re
+                
+            elif self.tipo_busqueda == 2:
+                pass #armar el re
+            
+            else:
+                if re.search(f"{self.target}+", title.lower()):
+                    entra_yield = True
 
+            if entra_yield:
+                item = Items()
+                item['title'] = title
+                item['categoria'] = categoria
+                item['price'] = price
+                item['link'] = product_link 
+                item['fecha'] = dt_format
+
+                yield item
+                
         next_page = response.xpath('//li[@class="next square not-border"]/a/@href').get()
         if next_page:
             next_page = base_url+next_page
             yield scrapy.Request(url=next_page, callback=self.parse_productos)
-
-# run spider
-# process = CrawlerProcess()
-# process.crawl(MusimundoSpider)
-# process.start()

@@ -15,7 +15,7 @@ class TiposArchivos(enum.Enum):
 class Procesador:
 
     def __init__(self,lista,criterio):
-        lista.sort(key=lambda x: x.price)
+        lista.sort(key=lambda x: x.get('price'))
         self._miLista = lista
         self._criterio = criterio
 
@@ -29,7 +29,7 @@ class Procesador:
                 headers = ['Title', 'Categoria', 'Price', 'Link', 'Fecha']
                 writer.writerow(headers)
                 for item in self._miLista:
-                    writer.writerow([item.title, item.categoria,"$ " + item.price,item.link,item.fecha])
+                    writer.writerow([item.get('title'), item.get('categoria'),"$ " + item.get('price'),item.get('link'),item.get('fecha')])
         elif tipoArchivos == TiposArchivos.json:
             jsonString = jsonpickle.encode(self._miLista, unpicklable=False)
             with open(filename, 'w') as f:
@@ -48,11 +48,11 @@ class Procesador:
 
             for item in self._miLista:
                 html_str +="""<tr>"""
-                html_str +="""<td>"""   + item.title + """</td>"""
-                html_str +="""<td>"""   + item.categoria + """</td>"""
-                html_str +="""<td>"""   + item.price + """</td>"""
-                html_str +="""<td>"""   + item.link + """</td>"""
-                html_str +="""<td>"""   + item.fecha + """</td>"""
+                html_str +="""<td>"""   + item.get('title') + """</td>"""
+                html_str +="""<td>"""   + item.get('categoria') + """</td>"""
+                html_str +="""<td>"""   + str(item.get('price')) + """</td>"""
+                html_str +="""<td>"""   + item.get('link') + """</td>"""
+                html_str +="""<td>"""   + item.get('fecha') + """</td>"""
                 html_str +="""</tr>"""
 
             html_str +="""    </indent></table>"""
@@ -61,10 +61,10 @@ class Procesador:
             Html_file.close()
 
 
-data='[{"title": "BOLSO MATERO NORTHLAND CITY BAG", "categoria": "M\u00c1S CATEGOR\u00cdAS", "price": "4610,10", "link": "https://www.musimundo.com/ms-categoras/bolsos-y-valijas/bolso-matero-northland-city-bag/p/00307151", "fecha": "07/11/2020 19:14:55"},{"title": "BOLSO MATERO NORTHLAND CITY BAG", "categoria": "M\u00c1S CATEGOR\u00cdAS", "price": "4608,02", "link": "https://www.musimundo.com/ms-categoras/bolsos-y-valijas/bolso-matero-northland-city-bag/p/00307150", "fecha": "07/11/2020 19:14:55"}]'
-decoder = Decoder.itemsDecoder()
-itemJson = decoder.decorder(data)
-miProcesador = Procesador(itemJson,"Bolsos")
-miProcesador.ImprimirArchivo(TiposArchivos.HTML)
-miProcesador.ImprimirArchivo(TiposArchivos.csv)
-miProcesador.ImprimirArchivo(TiposArchivos.json)
+# data='[{"title": "BOLSO MATERO NORTHLAND CITY BAG", "categoria": "M\u00c1S CATEGOR\u00cdAS", "price": "4610,10", "link": "https://www.musimundo.com/ms-categoras/bolsos-y-valijas/bolso-matero-northland-city-bag/p/00307151", "fecha": "07/11/2020 19:14:55"},{"title": "BOLSO MATERO NORTHLAND CITY BAG", "categoria": "M\u00c1S CATEGOR\u00cdAS", "price": "4608,02", "link": "https://www.musimundo.com/ms-categoras/bolsos-y-valijas/bolso-matero-northland-city-bag/p/00307150", "fecha": "07/11/2020 19:14:55"}]'
+# decoder = Decoder.item.get('')sDecoder()
+# item.get('')Json = decoder.decorder(data)
+# miProcesador = Procesador(item.get('')Json,"Bolsos")
+# miProcesador.ImprimirArchivo(TiposArchivos.HTML)
+# miProcesador.ImprimirArchivo(TiposArchivos.csv)
+# miProcesador.ImprimirArchivo(TiposArchivos.json)

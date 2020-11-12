@@ -1,12 +1,17 @@
 import scrapy
 from datetime import datetime
-
-#para correrlo uso el comando scrapy runspider casa_audio_spider.py -O output.json
+import re
+from spiders.items import Items
 
 class CasaDelAudioSpider(scrapy.Spider):
     name = 'casa_audio_spider'
     allowed_domain = ['www.casadelaudio.com/']
     start_urls = ['https://www.casadelaudio.com/']
+
+    def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):
+        super().__init__(**kwargs)
+        self.target = target
+        self.tipo_busqueda = tipo_busqueda
     
     def parse(self, response):
         links = response.xpath('//ul[@class="dropdown-menu"]/li/ul/li/a')
@@ -35,10 +40,24 @@ class CasaDelAudioSpider(scrapy.Spider):
             #link de producto
             product_link = base_url + product.xpath('.//div[@class="box_data"]/a/@href').get()
             
-            yield {
-                'title': title,
-                'categoria': categoria,
-                'price': price,
-                'link': product_link, 
-                'fecha': dt_format
-            }
+            entra_yield = False
+            
+            if self.tipo_busqueda == 1:
+                pass #armar el re
+                
+            elif self.tipo_busqueda == 2:
+                pass #armar el re
+            
+            else:
+                if re.search(f"{self.target}+", title.lower()):
+                    entra_yield = True
+
+            if entra_yield:
+                item = Items()
+                item['title'] = title
+                item['categoria'] = categoria
+                item['price'] = price
+                item['link'] = product_link 
+                item['fecha'] = dt_format
+
+                yield item

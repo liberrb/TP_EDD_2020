@@ -1,4 +1,4 @@
-# Scrapy settings for cetrogar project
+# Scrapy settings for yarara project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,10 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'cetrogar'
+BOT_NAME = 'yarara'
 
-SPIDER_MODULES = ['cetrogar.spiders']
-NEWSPIDER_MODULE = 'cetrogar.spiders'
+SPIDER_MODULES = ['yarara.spiders']
+NEWSPIDER_MODULE = 'yarara.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -45,13 +45,13 @@ CONCURRENT_REQUESTS_PER_IP = 16
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'cetrogar.middlewares.CetrogarSpiderMiddleware': 543,
+#    'yarara.middlewares.yararaSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'cetrogar.middlewares.CetrogarDownloaderMiddleware': 543,
+#    'yarara.middlewares.yararaDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -63,7 +63,7 @@ CONCURRENT_REQUESTS_PER_IP = 16
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'cetrogar.pipelines.CetrogarPipeline': 300,
+#    'yarara.pipelines.yararaPipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
