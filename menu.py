@@ -6,6 +6,7 @@ from scrapy.crawler import CrawlerProcess
 import re
 import run_spiders as spider
 import Procesador as proc
+from run_spiders import RunSpiders
 
 class Menu:
     
@@ -33,7 +34,9 @@ class Menu:
                 print(f'Buscando: {self.__target}')
                 ##-------------- ejecuto la busqueda
                 #meter stop word a target
-                a = spider.spider_musimundo_results(self.__target, 3) #tiene que llegar tipo_busqueda desde la seleccion del menu
+                #a = spider.spider_musimundo_results(self.__target, 3) #tiene que llegar tipo_busqueda desde la seleccion del menu
+                run = RunSpiders(['casaAudio', 'musimundo'],self.__target, 3)
+                a = run.spiders_run()
                 procesador = proc.Procesador(a, self.__target)
                 procesador.ImprimirArchivo( proc.TiposArchivos.HTML )
                 ##--------------
