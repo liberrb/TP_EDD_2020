@@ -54,8 +54,8 @@ class MusimundoSpider(scrapy.Spider):
             elif self.tipo_busqueda == 2:
                 pass #armar el re
             
-            else:
-                if re.search(f"{self.target}+", title.lower()):
+            else: #seria opcion3
+                if re.findall(r"(?=("+'|'.join(self.target)+r"))",title.lower()):
                     entra_yield = True
 
             if entra_yield:
