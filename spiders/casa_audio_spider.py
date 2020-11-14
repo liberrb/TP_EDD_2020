@@ -7,7 +7,6 @@ from config import Config
 class CasaDelAudioSpider(scrapy.Spider):
     name = 'casa_audio_spider'
     allowed_domain = ['www.casadelaudio.com/']
-    #start_urls = ['https://www.casadelaudio.com/']
     start_urls = [ Config().get_start_url()['casa_del_audio'] ]
 
     def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):

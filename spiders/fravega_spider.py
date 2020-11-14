@@ -4,12 +4,13 @@ import re
 from spiders.items import Items
 from nltk.corpus import stopwords
 from nltk import word_tokenize
+from config import Config
 
 
 class FravegaSpiderSpider(scrapy.Spider):
     name = 'fravega_spider'
     allowed_domains = ['www.fravega.com']
-    start_urls = ['https://www.fravega.com/']
+    start_urls = [ Config().get_start_url()['fravega'] ]
 
     def parse(self, response):
         links = response.xpath('//div[@class="Categories__StyledCategories-m0ao24-0 heNzOg"]/ul/li/a')

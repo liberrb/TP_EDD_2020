@@ -4,12 +4,13 @@ from datetime import datetime
 from spiders.items import Items
 from nltk.corpus import stopwords
 from nltk import word_tokenize
+from config import Config
 
 
 class CetrogarSpiderSpider(scrapy.Spider):
     name = 'cetrogar_spider'
     allowed_domains = ['www.cetrogar.com.ar']
-    start_urls = ['https://www.cetrogar.com.ar/']
+    start_urls = [ Config().get_start_url()['cetrogar'] ]
     
     def __init__(self, target='', **kwargs):
         super().__init__(**kwargs)  # python3

@@ -1,5 +1,8 @@
+import pathlib
 
 class Config():
+
+    directorio_descarga = str(pathlib.Path().absolute()) + '/resultados/' 
 
     paginas = {
                '1': 'Cetrogar', 
@@ -29,14 +32,12 @@ class Config():
 
     start_urls = {
                   'casa_del_audio' : 'https://www.casadelaudio.com/',
-                  'cetrogar' : '',
-                  'gravega' : '',
-                  'musimundo' : ''
-
+                  'cetrogar' : 'https://www.cetrogar.com.ar/',
+                  'fravega' : 'https://www.fravega.com/',
+                  'musimundo' : 'https://www.musimundo.com/'
                  }
 
-    import pathlib
-    directorio_descarga = str(pathlib.Path().absolute()) + '/resultados/' 
+
     def get_path(self):
         return self.directorio_descarga
 

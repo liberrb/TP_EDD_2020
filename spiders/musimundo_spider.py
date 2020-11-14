@@ -4,12 +4,13 @@ import re
 from spiders.items import Items
 from nltk.corpus import stopwords
 from nltk import word_tokenize
+from config import Config
 
 
 class MusimundoSpider(scrapy.Spider):
     name = 'musimundo_spider'
     allowed_domain = ['www.musimundo.com']
-    start_urls = ['https://www.musimundo.com/']
+    start_urls = [ Config().get_start_url()['musimundo'] ]
         
     def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):
         super().__init__(**kwargs)
