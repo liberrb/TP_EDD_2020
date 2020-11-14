@@ -24,15 +24,44 @@ class FravegaSpiderSpider(scrapy.Spider):
             yield response.follow(url=link, callback=self.parse_productos)      
 
     def parse_productos(self, response):
-               
+        base_url= 'https://www.fravega.com'
+        categoria = response.xpath('//h1[@name="categoryTitle"]/text()']
         for products in response.xpath("//ul[@class='listingDesktopstyled__SearchResultList-wzwlr8-6 fCKkuk']/li"):
-            yield {
-                'title': products.xpath(".//div/a/article/div/h4/text()[2]").get(),
-                'price': products.xpath('.//div/a/article/div/div/span/text()').get()
-            }
-       
-        next_page = response.xpath('//*[@id="__next"]/div[3]/div[2]/div/div/div[2]/section/ul[2]/ul/li[5]/a').get()
-        
-        if next_page:
-            yield scrapy.Request(url=next_page, callback=self.parse_productos)   
+            
+            #title
+            title = products.xpath(".//div/a/article/div/h4/text()[2]").get(),
+            
+            price = products.xpath('.//div/a/article/div/div/span/text()').get()
+           
+           #fecha y hora de extraccion
+            now = datetime.now()
+            dt_format = now.strftime("%d/%m/%Y %H:%M:%S")
 
+            link = base_url + products.path(".//div/a/@href")
+
+            entra_yield = False
+
+            if self.tipo_busqueda == 1:
+                pass #armar el re
+                
+            elif self.tipo_busqueda == 2:
+                pass #armar el re
+            
+            else: #seria opcion3
+                if re.findall(r"(?=("+'|'.join(self.target)+r"))",title.lower()):
+                    entra_yield = True
+
+            if entra_yield:
+                item = Items()
+                item['title'] = title
+                item['categoria'] = categoria
+                item['price'] = price
+                item['link'] = product_link 
+                item['fecha'] = dt_format
+
+                yield item
+            
+            
+            
+            
+            
