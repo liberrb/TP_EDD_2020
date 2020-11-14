@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 from sys import platform
-
+from config import Config
+from run_spiders import RunSpiders
 
 class QuiereSalirException(Exception):
     pass
@@ -10,15 +11,17 @@ class QuiereSalirException(Exception):
 class Menu:
 
     def __init__(self):
+        config = Config()
         self.__salir = False
         self.__target = ''
         self.__so = 'Unknown'
-        self.__formatos_admitidos = {'1': 'csv', '2': 'json', '3': 'html', '4': 'Todos'}
-        self.__paginas = {'1': 'Cetrogar', '2': 'Musimundo', '3': 'Frávega', '4': 'La Casa Del Audio', '5': 'Todas'}
-        self.__extras = {'1': 'Estadísticas', '2': 'Tabla comparativa', '3': 'Ambas'}
-        self.__tipos = {'1': 'Frase exacta', '2': 'Todas las palabras', '3': 'Alguna de las palabras'}
         self.__formato_out = '-1'
 
+        self.__formatos_admitidos = config.get_formatos_admitidos()
+        self.__paginas = config.get_paginas()
+        self.__extras = config.get_extras()
+        self.__tipos = config.get_tipos()
+        
     def ejecutar(self):
 
         self.__limpiar_linea_de_comandos()
@@ -172,7 +175,8 @@ class Menu:
         print('En: \n')
         for pagina in self.__paginas_elegidas:
             print(self.__paginas[pagina])
-        # Ejecutar busqueda ACA
+        run = RunSpiders( self.__paginas_elegidas  ,self.__target, self.__tipo)
+        a = run.spiders_run()
     
     def __exportar_a_archivos(self):
         # Exportar a archivos aca

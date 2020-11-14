@@ -13,3 +13,4 @@ class Items(scrapy.Item):
     price = Field()
     link = Field()
     fecha = Field()
+    market = Field()

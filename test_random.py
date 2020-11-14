@@ -4,12 +4,35 @@ import re
 
 if __name__ == "__main__":
 
-    target = 'SAMSUNG'
-    x = 'SMART TV SAMSUNG 65 PULGADAS 4K UHD 65RU7100'
+    # #tipo3
+    # target = 'pava'
+    # x = 'AOC SMART TV HD 32" 32S5295/77G'
+    # stop_words = frozenset(stopwords.words('spanish'))
+    # word_tokens = word_tokenize(target.lower())
+    # tokens = [w for w in word_tokens if not w in stop_words]
+    # print(tokens)
+    # #print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
+    # if re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()):
+    #     print('encontro algo')
+    #     print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
+
+    # #tipo1
+    # target = 'AOC SMART TV HD 32" 32S5295/77G'
+    # title = 'AOC SMART TV  32" 32S5295/77G'
+    # print( target == title )
+
+    #tipo2
+    target = 'AOC SMART TV HD 32" 32S5295/77G'
+    title = 'AOC SMART TV HD 32" 32S5295/77G'
     stop_words = frozenset(stopwords.words('spanish'))
+    
     word_tokens = word_tokenize(target.lower())
     tokens = [w for w in word_tokens if not w in stop_words]
-    print(tokens)
-    print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
-    if re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()):
-        print('encontro algo')
+    
+    title_tokens = word_tokenize(title.lower())
+    title_token = [w for w in title_tokens if not w in stop_words]
+    
+    print('token' , tokens)
+    print('title_token', title_token)
+    check =  all(item in tokens for item in title_token)
+    print(check)

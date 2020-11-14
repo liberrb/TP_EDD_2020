@@ -2,11 +2,13 @@ import scrapy
 from datetime import datetime
 import re
 from spiders.items import Items
+from config import Config
 
 class CasaDelAudioSpider(scrapy.Spider):
     name = 'casa_audio_spider'
     allowed_domain = ['www.casadelaudio.com/']
-    start_urls = ['https://www.casadelaudio.com/']
+    #start_urls = ['https://www.casadelaudio.com/']
+    start_urls = [ Config().get_start_url()['casa_del_audio'] ]
 
     def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):
         super().__init__(**kwargs)
@@ -42,13 +44,13 @@ class CasaDelAudioSpider(scrapy.Spider):
             
             entra_yield = False
             
-            if self.tipo_busqueda == 1:
-                pass #armar el re
+            if self.tipo_busqueda == '1':
+                entra_yield = title.lower() == self.target
                 
-            elif self.tipo_busqueda == 2:
+            elif self.tipo_busqueda == '2':
                 pass #armar el re
             
-            else: #seria opcion3
+            elif self.tipo_busqueda == '3': 
                 if re.findall(r"(?=("+'|'.join(self.target)+r"))",title.lower()):
                     entra_yield = True
 
@@ -59,5 +61,6 @@ class CasaDelAudioSpider(scrapy.Spider):
                 item['price'] = price
                 item['link'] = product_link 
                 item['fecha'] = dt_format
+                item['market'] = 'casadelaudio'
 
                 yield item

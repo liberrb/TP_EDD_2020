@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from menu import Menu
+from menu2 import Menu
 
 def main():
     menu = Menu()
