@@ -64,7 +64,7 @@ class Procesador:
     def contarElementosLista(self,lista):
         return {i:lista.count(i.get('title')) for i in lista}
 
-    def TablaComparativa(self,tipo,modelo =""):
+    def tablaComparativa(self,tipo,modelo =""):
         resultado = []
 
 
@@ -83,3 +83,17 @@ class Procesador:
                     resultado.append(k)                    
         return resultado
 
+    def estadisticas(self,tipo):
+            tienda1 = []
+            tienda2 = []
+            tienda3 = []
+            tienda4 = []
+            for item in self._miLista:
+                if(item.get('market') == 'casadelaudio'):
+                    tienda1.append(item)
+                elif(item.get('market') == 'musimundo'):
+                    tienda2.append(item)
+                elif(item.get('market') == 'fravega'):
+                    tienda3.append(item) 
+                else:
+                    tienda4.append(item)
