@@ -6,15 +6,23 @@ if __name__ == "__main__":
 
     # #tipo3
     target = 'LG'
-    x = 'VENTILADOR DE PIE PHILCO VPP2018 DE 20 PULGADAS'
+    x = 'VENTILADOR DE PIE PHILCO VPP2018 DE 20 PULGADAS lg'
     stop_words = frozenset(stopwords.words('spanish'))
     word_tokens = word_tokenize(target.lower())
     tokens = [w for w in word_tokens if not w in stop_words]
     print('tokens', tokens)
     #print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
-    if re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()):
-        print('encontro algo')
-        print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
+    
+    x_tokens = word_tokenize(x.lower())
+    tokens_x = [w for w in x_tokens if not w in stop_words]
+    print('x',x_tokens )
+
+    check =  any(item in tokens for item in tokens_x)
+    print(check)
+    
+    # if re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()):
+    #     print('encontro algo')
+    #     print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
 
     # #tipo1
     # target = 'AOC SMART TV HD 32" 32S5295/77G'
@@ -36,7 +44,3 @@ if __name__ == "__main__":
     # print('title_token', title_token)
     # check =  all(item in tokens for item in title_token)
     # print(check)
-
-    x = None
-    x = str(x)
-    print(x)

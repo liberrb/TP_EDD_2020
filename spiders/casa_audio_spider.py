@@ -3,6 +3,8 @@ from datetime import datetime
 import re
 from spiders.items import Items
 from config import Config
+from nltk.corpus import stopwords
+from nltk import word_tokenize
 
 class CasaDelAudioSpider(scrapy.Spider):
     name = 'casa_audio_spider'
@@ -47,11 +49,16 @@ class CasaDelAudioSpider(scrapy.Spider):
                 entra_yield = title.lower() == self.target
                 
             elif self.tipo_busqueda == '2':
-                pass #armar el re
+                stop_words = frozenset(stopwords.words('spanish'))
+                title_tokens = word_tokenize(title.lower())
+                title_token = [w for w in title_tokens if not w in stop_words]
+                entra_yield = all(item in self.target for item in title_token)
             
             elif self.tipo_busqueda == '3': 
-                if re.findall(r"(?=("+'|'.join(self.target)+r"))",title.lower()):
-                    entra_yield = True
+                stop_words = frozenset(stopwords.words('spanish'))
+                title_tokens = word_tokenize(title.lower())
+                title_token = [w for w in title_tokens if not w in stop_words]
+                entra_yield = any(item in self.target for item in title_token)
 
             if entra_yield:
                 item = Items()

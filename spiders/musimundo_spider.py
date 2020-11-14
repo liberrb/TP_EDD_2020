@@ -58,11 +58,13 @@ class MusimundoSpider(scrapy.Spider):
                 stop_words = frozenset(stopwords.words('spanish'))
                 title_tokens = word_tokenize(title.lower())
                 title_token = [w for w in title_tokens if not w in stop_words]
-                entra_yield =  all(item in self.target for item in title_token)
+                entra_yield = all(item in self.target for item in title_token)
             
-            elif self.tipo_busqueda == '3':
-                if re.findall(r"(?=("+'|'.join(self.target)+r"))",title.lower()):
-                    entra_yield = True
+            elif self.tipo_busqueda == '3': 
+                stop_words = frozenset(stopwords.words('spanish'))
+                title_tokens = word_tokenize(title.lower())
+                title_token = [w for w in title_tokens if not w in stop_words]
+                entra_yield = any(item in self.target for item in title_token)
 
             if entra_yield:
                 item = Items()
