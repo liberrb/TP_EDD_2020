@@ -3,6 +3,7 @@ import os
 from sys import platform
 from config import Config
 from run_spiders import RunSpiders
+from procesador import Procesador
 
 class QuiereSalirException(Exception):
     pass
@@ -175,12 +176,15 @@ class Menu:
         print('En: \n')
         for pagina in self.__paginas_elegidas:
             print(self.__paginas[pagina])
+        
         run = RunSpiders( self.__paginas_elegidas  ,self.__target, self.__tipo)
-        a = run.spiders_run()
+        resultados = run.spiders_run()
+        
+        self.procesador = Procesador(resultados, self.__target.replace(' ','_')  )
     
     def __exportar_a_archivos(self):
-        # Exportar a archivos aca
-        pass
+
+        self.procesador.ImprimirArchivo(self.__formatos_admitidos[self.__formato_out])
     
     def __imprimir_tabla_o_estadistica(self):
         # imprimir tabla o estadistica aca

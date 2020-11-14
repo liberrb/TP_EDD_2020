@@ -12,8 +12,7 @@ class Config():
     formatos_admitidos = {
                           '1': 'csv', 
                           '2': 'json', 
-                          '3': 'html', 
-                          '4': 'Todos'
+                          '3': 'html'
                          }
 
     extras = {
@@ -35,6 +34,11 @@ class Config():
                   'musimundo' : ''
 
                  }
+
+    import pathlib
+    directorio_descarga = str(pathlib.Path().absolute()) + '/resultados/' 
+    def get_path(self):
+        return self.directorio_descarga
 
     def get_paginas(self):
         return self.paginas

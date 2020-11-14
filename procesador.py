@@ -1,16 +1,14 @@
-import Decoder
+import decoder
 import csv
 import datetime
 import enum
 import jsonpickle
-import pandas 
+#import pandas 
 import json
 from json import JSONEncoder
-
-class TiposArchivos(enum.Enum):
-   csv = 1
-   json = 2
-   HTML = 3
+from config import Config
+import os
+import errno
 
 
 class Procesador:
@@ -22,16 +20,26 @@ class Procesador:
 
 
     def ImprimirArchivo(self,tipoArchivos):
-        filename = self._criterio + "_" + datetime.datetime.now().strftime("%d-%m-%Y") + "." + tipoArchivos.name
-        if tipoArchivos == TiposArchivos.csv:          
+
+        path = Config().get_path()
+
+        if not os.path.exists(os.path.dirname(path)):
+            try:
+                os.makedirs(os.path.dirname(path))
+            except OSError as exc:
+                if exc.errno != errno.EEXIST:
+                    raise
+
+        filename = path + self._criterio + "_" + datetime.datetime.now().strftime("%d-%m-%Y") + "." + tipoArchivos
+        if tipoArchivos == 'csv':       
             with open(filename, 'w') as f:
                 writer = csv.writer(f)
                 writer = csv.writer(open(filename, 'w'), delimiter=';')
                 headers = ['Title', 'Categoria', 'Price', 'Link', 'Fecha']
                 writer.writerow(headers)
                 for item in self._miLista:
-                    writer.writerow([item.get('title'), item.get('categoria'),"$ " + item.get('price'),item.get('link'),item.get('fecha')])
-        elif tipoArchivos == TiposArchivos.json:
+                    writer.writerow([item.get('title'), str(item.get('categoria')),"$ " + str(item.get('price')) ,item.get('link'),str(item.get('fecha'))])
+        elif tipoArchivos == 'json':
             jsonString = jsonpickle.encode(self._miLista, unpicklable=False)
             with open(filename, 'w') as f:
                 json.dump(jsonString, f)
@@ -49,11 +57,11 @@ class Procesador:
 
             for item in self._miLista:
                 html_str +="""<tr>"""
-                html_str +="""<td>"""   + item.get('title') + """</td>"""
-                html_str +="""<td>"""   + item.get('categoria') + """</td>"""
+                html_str +="""<td>"""   + str(item.get('title')) + """</td>"""
+                html_str +="""<td>"""   + str(item.get('categoria')) + """</td>"""
                 html_str +="""<td>"""   + str(item.get('price')) + """</td>"""
-                html_str +="""<td>"""   + item.get('link') + """</td>"""
-                html_str +="""<td>"""   + item.get('fecha') + """</td>"""
+                html_str +="""<td>"""   + str(item.get('link')) + """</td>"""
+                html_str +="""<td>"""   + str(item.get('fecha')) + """</td>"""
                 html_str +="""</tr>"""
 
             html_str +="""    </indent></table>"""

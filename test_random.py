@@ -22,17 +22,21 @@ if __name__ == "__main__":
     # print( target == title )
 
     #tipo2
-    target = 'AOC SMART TV HD 32" 32S5295/77G'
-    title = 'AOC SMART TV HD 32" 32S5295/77G'
-    stop_words = frozenset(stopwords.words('spanish'))
+    # target = 'AOC SMART TV HD 32" 32S5295/77G'
+    # title = 'AOC SMART TV HD 32" 32S5295/77G'
+    # stop_words = frozenset(stopwords.words('spanish'))
     
-    word_tokens = word_tokenize(target.lower())
-    tokens = [w for w in word_tokens if not w in stop_words]
+    # word_tokens = word_tokenize(target.lower())
+    # tokens = [w for w in word_tokens if not w in stop_words]
     
-    title_tokens = word_tokenize(title.lower())
-    title_token = [w for w in title_tokens if not w in stop_words]
+    # title_tokens = word_tokenize(title.lower())
+    # title_token = [w for w in title_tokens if not w in stop_words]
     
-    print('token' , tokens)
-    print('title_token', title_token)
-    check =  all(item in tokens for item in title_token)
-    print(check)
+    # print('token' , tokens)
+    # print('title_token', title_token)
+    # check =  all(item in tokens for item in title_token)
+    # print(check)
+
+    x = None
+    x = str(x)
+    print(x)
