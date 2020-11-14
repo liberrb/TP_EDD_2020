@@ -24,7 +24,7 @@ class FravegaSpiderSpider(scrapy.Spider):
             yield response.follow(url=link, callback=self.parse_productos)      
 
     def parse_productos(self, response):
-        
+        base_url= 'https://www.fravega.com'
         categoria = response.xpath('//h1[@name="categoryTitle"]/text()']
         for products in response.xpath("//ul[@class='listingDesktopstyled__SearchResultList-wzwlr8-6 fCKkuk']/li"):
             
@@ -37,7 +37,7 @@ class FravegaSpiderSpider(scrapy.Spider):
             now = datetime.now()
             dt_format = now.strftime("%d/%m/%Y %H:%M:%S")
 
-            link = products.path(".//div/a/@href")
+            link = base_url + products.path(".//div/a/@href")
 
             entra_yield = False
 
