@@ -3,6 +3,7 @@ import csv
 import datetime
 import enum
 import jsonpickle
+import pandas 
 import json
 from json import JSONEncoder
 
@@ -60,11 +61,25 @@ class Procesador:
             Html_file.write(html_str)
             Html_file.close()
 
+    def contarElementosLista(self,lista):
+        return {i:lista.count(i.get('title')) for i in lista}
 
-# data='[{"title": "BOLSO MATERO NORTHLAND CITY BAG", "categoria": "M\u00c1S CATEGOR\u00cdAS", "price": "4610,10", "link": "https://www.musimundo.com/ms-categoras/bolsos-y-valijas/bolso-matero-northland-city-bag/p/00307151", "fecha": "07/11/2020 19:14:55"},{"title": "BOLSO MATERO NORTHLAND CITY BAG", "categoria": "M\u00c1S CATEGOR\u00cdAS", "price": "4608,02", "link": "https://www.musimundo.com/ms-categoras/bolsos-y-valijas/bolso-matero-northland-city-bag/p/00307150", "fecha": "07/11/2020 19:14:55"}]'
-# decoder = Decoder.item.get('')sDecoder()
-# item.get('')Json = decoder.decorder(data)
-# miProcesador = Procesador(item.get('')Json,"Bolsos")
-# miProcesador.ImprimirArchivo(TiposArchivos.HTML)
-# miProcesador.ImprimirArchivo(TiposArchivos.csv)
-# miProcesador.ImprimirArchivo(TiposArchivos.json)
+    def TablaComparativa(self,tipo,modelo =""):
+        resultado = []
+
+
+        if(tipo == "a"):
+            for item in self._miLista:
+                if(modelo in item.get('title')):
+                    resultado.append(item)
+            resultado.sort(key=lambda x: x.get('price'))
+        elif(tipo == "b"):
+            elementos = self._miLista.groupby(['title']).mean()
+            resultado = elementos
+        else:
+            elementos = self.contarElementosLista(self._miLista)
+            for k, v in elementos.items():
+                if(v == 1):
+                    resultado.append(k)                    
+        return resultado
+
