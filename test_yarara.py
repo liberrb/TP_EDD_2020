@@ -1,8 +1,9 @@
 from utils import Utils
 from procesador import Procesador
 from os import path
-import datetime
 import pathlib
+import datetime
+from config import Config
 
 utils = Utils()
 def test_tipo_busqueda_1():
@@ -61,3 +62,16 @@ def test_imprimir_archivo_html():
     procesador.ImprimirArchivo('html')
     filename = criterio + "_" + datetime.datetime.now().strftime("%d-%m-%Y") + '.html'
     assert path.isfile('resultados/' + filename)
+
+config = Config()
+def test_config_paginas():
+    assert config.get_paginas()['5'] == 'Todas'
+
+def test_config_formatos_admitidos():
+    assert config.get_formatos_admitidos()['2'] == 'json'
+
+def test_config_tipos():
+    assert config.get_tipos()['3'] == 'Alguna de las palabras'
+
+def test_config_url():
+    assert config.get_start_url()['fravega'] == 'https://www.fravega.com/'
