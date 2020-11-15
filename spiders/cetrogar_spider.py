@@ -5,12 +5,14 @@ from spiders.items import Items
 from nltk.corpus import stopwords
 from nltk import word_tokenize
 from config import Config
+from utils import Utils
 
 
 class CetrogarSpiderSpider(scrapy.Spider):
     name = 'cetrogar_spider'
     allowed_domains = ['www.cetrogar.com.ar']
     start_urls = [ Config().get_start_url()['cetrogar'] ]
+    utils = Utils()
     
     def __init__(self, target='', **kwargs):
         super().__init__(**kwargs)  # python3
@@ -49,19 +51,13 @@ class CetrogarSpiderSpider(scrapy.Spider):
             entra_yield = False
             
             if self.tipo_busqueda == '1':
-                entra_yield = title.lower() == self.target
+                entra_yield = self.utils.tipo_busqueda_1(self.target, title)
                 
             elif self.tipo_busqueda == '2':
-                stop_words = frozenset(stopwords.words('spanish'))
-                title_tokens = word_tokenize(title.lower())
-                title_token = [w for w in title_tokens if not w in stop_words]
-                entra_yield = all(item in self.target for item in title_token)
-            
+                entra_yield = self.utils.tipo_busqueda_2(self.target, title)
+
             elif self.tipo_busqueda == '3':
-                stop_words = frozenset(stopwords.words('spanish'))
-                title_tokens = word_tokenize(title.lower())
-                title_token = [w for w in title_tokens if not w in stop_words]
-                entra_yield = any(item in self.target for item in title_token)
+                entra_yield = self.utils.tipo_busqueda_3(self.target, title)
 
             if entra_yield:
                 item = Items()

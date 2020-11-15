@@ -5,11 +5,13 @@ from spiders.items import Items
 from config import Config
 from nltk.corpus import stopwords
 from nltk import word_tokenize
+from utils import Utils
 
 class CasaDelAudioSpider(scrapy.Spider):
     name = 'casa_audio_spider'
     allowed_domain = ['www.casadelaudio.com/']
     start_urls = [ Config().get_start_url()['casa_del_audio'] ]
+    utils = Utils()
 
     def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):
         super().__init__(**kwargs)
@@ -44,21 +46,15 @@ class CasaDelAudioSpider(scrapy.Spider):
             product_link = base_url + product.xpath('.//div[@class="box_data"]/a/@href').get()
             
             entra_yield = False
-            
+
             if self.tipo_busqueda == '1':
-                entra_yield = title.lower() == self.target
+                entra_yield = self.utils.tipo_busqueda_1(self.target, title)
                 
             elif self.tipo_busqueda == '2':
-                stop_words = frozenset(stopwords.words('spanish'))
-                title_tokens = word_tokenize(title.lower())
-                title_token = [w for w in title_tokens if not w in stop_words]
-                entra_yield = all(item in self.target for item in title_token)
-            
-            elif self.tipo_busqueda == '3': 
-                stop_words = frozenset(stopwords.words('spanish'))
-                title_tokens = word_tokenize(title.lower())
-                title_token = [w for w in title_tokens if not w in stop_words]
-                entra_yield = any(item in self.target for item in title_token)
+                entra_yield = self.utils.tipo_busqueda_2(self.target, title)
+
+            elif self.tipo_busqueda == '3':
+                entra_yield = self.utils.tipo_busqueda_3(self.target, title)
 
             if entra_yield:
                 item = Items()

@@ -1,46 +1,20 @@
-from nltk.corpus import stopwords
-from nltk import word_tokenize
-import re
+from utils import Utils
+utils = Utils()
 
-if __name__ == "__main__":
+def test_tipo_busqueda_1():
+    '''Publicación con la frase exacta'''
+    target = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    title = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    assert utils.tipo_busqueda_1(target, title)
 
-    # #tipo3
-    target = 'LG'
-    x = 'VENTILADOR DE PIE PHILCO VPP2018 DE 20 PULGADAS lg'
-    stop_words = frozenset(stopwords.words('spanish'))
-    word_tokens = word_tokenize(target.lower())
-    tokens = [w for w in word_tokens if not w in stop_words]
-    print('tokens', tokens)
-    #print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
-    
-    x_tokens = word_tokenize(x.lower())
-    tokens_x = [w for w in x_tokens if not w in stop_words]
-    print('x',x_tokens )
+def test_tipo_busqueda_2():
+    '''Publicación que contenga todas las palabras'''
+    target = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    title = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    assert utils.tipo_busqueda_2(target, title)
 
-    check =  any(item in tokens for item in tokens_x)
-    print(check)
-    
-    # if re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()):
-    #     print('encontro algo')
-    #     print(re.findall(r"(?=("+'|'.join(tokens)+r"))",x.lower()))
-
-    # #tipo1
-    # target = 'AOC SMART TV HD 32" 32S5295/77G'
-    # title = 'AOC SMART TV  32" 32S5295/77G'
-    # print( target == title )
-
-    #tipo2
-    # target = 'AOC SMART TV HD 32" 32S5295/77G'
-    # title = 'AOC SMART TV HD 32" 32S5295/77G'
-    # stop_words = frozenset(stopwords.words('spanish'))
-    
-    # word_tokens = word_tokenize(target.lower())
-    # tokens = [w for w in word_tokens if not w in stop_words]
-    
-    # title_tokens = word_tokenize(title.lower())
-    # title_token = [w for w in title_tokens if not w in stop_words]
-    
-    # print('token' , tokens)
-    # print('title_token', title_token)
-    # check =  all(item in tokens for item in title_token)
-    # print(check)
+def test_tipo_busqueda_3():
+    '''Publicación que contenga algunas de las palabras.'''
+    target = 'Lavarropas Longvie'
+    title = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    assert utils.tipo_busqueda_3(target, title)
