@@ -14,9 +14,10 @@ class CetrogarSpiderSpider(scrapy.Spider):
     start_urls = [ Config().get_start_url()['cetrogar'] ]
     utils = Utils()
     
-    def __init__(self, target='', **kwargs):
-        super().__init__(**kwargs)  # python3
+    def __init__(self, target=None, tipo_busqueda=None, *args, **kwargs):
+        super().__init__(**kwargs)
         self.target = target
+        self.tipo_busqueda = tipo_busqueda
 
     def parse(self, response):
         links = response.xpath('//div[@class="navigation-container"]/ul/li/a')
