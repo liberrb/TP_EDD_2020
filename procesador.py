@@ -3,7 +3,6 @@ import csv
 import datetime
 import enum
 import jsonpickle
-#import pandas 
 import json
 from json import JSONEncoder
 from config import Config
@@ -151,7 +150,7 @@ class Procesador:
             for item in self._miLista:
                 if(item.get('title') not in resultadoYaestan):
                     for producto in self._miLista:                   
-                        if(item != producto and SM(None, item.get('title'), producto.get('title')).ratio() >= 0.6):
+                        if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= 0.6):
                             resultado.append(producto)
                             resultadoYaestan.append(producto.get('title'))
                     if(resultado.count > 0):
@@ -163,7 +162,7 @@ class Procesador:
                 if(item.get('title') not in resultadoYaestan):
                     suma = 0
                     for producto in self._miLista:                   
-                        if(item != producto and SM(None, item.get('title'), producto.get('title')).ratio() >= 0.6):
+                        if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= 0.6):
                             suma += producto.get('price')
                             resultado.append(producto)
                             resultadoYaestan.append(producto.get('title'))
@@ -177,7 +176,7 @@ class Procesador:
         else:
             for item in self._miLista:
                 for producto in self._miLista:                   
-                    if(item != producto and SM(None, item.get('title'), producto.get('title')).ratio() >= 0.6):
+                    if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= 0.6):
                         resultado.append(producto)
                     if(resultado.count == 0):
                         resultado.append(item)
