@@ -91,7 +91,7 @@ class Procesador:
             except OSError as exc:
                 if exc.errno != errno.EEXIST:
                     raise
-
+        nombreItem = nombreItem.replace("/","_")
         filename = path + nombreItem.replace(" ","_") +  "." + "html"
 
         html_str = ""
