@@ -183,12 +183,10 @@ class Menu:
         self.procesador = Procesador(resultados, self.__target.replace(' ','_')  )
     
     def __exportar_a_archivos(self):
-
-        self.procesador.ImprimirArchivo(self.__formatos_admitidos[self.__formato_out])
+        self.procesador.imprimirArchivo(self.__formatos_admitidos[self.__formato_out])
     
     def __imprimir_tabla_o_estadistica(self):
-        # imprimir tabla o estadistica aca
-        pass
+        self.procesador.tablaComparativa( self.__tabla_o_estadisticas )
 
     def get_target(self):
         return self.__target

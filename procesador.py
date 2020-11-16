@@ -3,7 +3,6 @@ import csv
 import datetime
 import enum
 import jsonpickle
-#import pandas 
 import json
 from json import JSONEncoder
 from config import Config
@@ -32,7 +31,7 @@ class Procesador:
         self._criterio = criterio
 
 
-    def ImprimirArchivo(self,tipoArchivos):
+    def imprimirArchivo(self,tipoArchivos):
 
         path = Config().get_path()
 
@@ -147,18 +146,18 @@ class Procesador:
     def tablaComparativa(self,tipo,modelo =""):
         resultado = []
         resultadoYaestan = []
-        if(tipo == "a"):
+        if(tipo == '1'):
             for item in self._miLista:
                 if(item.get('title') not in resultadoYaestan):
                     for producto in self._miLista:                   
                         if(item != producto and SM(None, item.get('title'), producto.get('title')).ratio() >= 0.6):
                             resultado.append(producto)
                             resultadoYaestan.append(producto.get('title'))
-                    if(resultado.count > 0):
+                    if(len(resultado) > 0):
                         resultado.append(item)
                         self.guardarTablaHtmlComparativa(resultado,item.get('title'))
                     resultado.clear()    
-        elif(tipo == "b"):
+        elif(tipo == '2'):
             for item in self._miLista:
                 if(item.get('title') not in resultadoYaestan):
                     suma = 0
@@ -167,7 +166,7 @@ class Procesador:
                             suma += producto.get('price')
                             resultado.append(producto)
                             resultadoYaestan.append(producto.get('title'))
-                    cantidadItems = resultado.count
+                    cantidadItems = len(resultado)
                     if(cantidadItems > 0):
                         suma += item.get('price')
                         aGuardar = ItemsAuxiliar(item.get('title'),item.get('categoria'),item.get('price'),item.get('link'),item.get('fecha'),item.get('market'),suma/cantidadItems,cantidadItems)
@@ -179,7 +178,7 @@ class Procesador:
                 for producto in self._miLista:                   
                     if(item != producto and SM(None, item.get('title'), producto.get('title')).ratio() >= 0.6):
                         resultado.append(producto)
-                    if(resultado.count == 0):
+                    if(len(resultado) == 0):
                         resultado.append(item)
             self.guardarTablaHtmlComparativa(resultado,"Unicos")                   
 

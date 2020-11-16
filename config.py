@@ -19,9 +19,10 @@ class Config():
                          }
 
     extras = {
-              '1': 'Estadísticas', 
-              '2': 'Tabla comparativa', 
-              '3': 'Ambas'
+              '1': 'Estadísticas por modelo',
+              '2': 'Estadísticas por promedio',
+              #'3': 'Tabla comparativa', 
+              #'4': 'Ambas'
              }
 
     tipos = {

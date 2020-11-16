@@ -22,10 +22,22 @@ def test_tipo_busqueda_2():
     title = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
     assert utils.tipo_busqueda_2(target, title)
 
+def test_tipo_busqueda_2_v1():
+    '''Publicación que contenga todas las palabras'''
+    target = 'Lavarropas CARGA Frontal'
+    title = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    assert utils.tipo_busqueda_2(target, title)
+
 def test_tipo_busqueda_3():
     '''Publicación que contenga algunas de las palabras.'''
     target = 'Lavarropas Longvie'
     title = 'Lavarropas Carga Frontal Longvie 8 Kg 1200 RPM L18012'
+    assert utils.tipo_busqueda_3(target, title)
+
+def test_tipo_busqueda_3_v1():
+    '''Publicación que contenga todas las palabras'''
+    target = 'Celular Samsung'
+    title = 'CELULAR LIBRE SAMSUNG S20 ULTRA GRIS'
     assert utils.tipo_busqueda_3(target, title)
 
 #fragmeto extraido de un scrapeo donde criterio fue longvie, pero para lo cambio a restados_test para test
@@ -79,6 +91,9 @@ def test_config_tipos():
 
 def test_config_url():
     assert config.get_start_url()['fravega'] == 'https://www.fravega.com/'
+
+def test_config_extras():
+    assert config.get_extras()['1'] == 'Estadísticas por modelo'
 
 #Test de Menu
 class TestMenu(unittest.TestCase):
