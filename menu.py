@@ -8,7 +8,6 @@ from procesador import Procesador
 class QuiereSalirException(Exception):
     pass
 
-
 class Menu:
 
     def __init__(self):

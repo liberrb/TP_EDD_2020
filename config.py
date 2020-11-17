@@ -22,8 +22,6 @@ class Config():
               '1': 'Estadísticas por modelo',
               '2': 'Estadísticas por promedio',
               '3': 'Unicos por tienda',
-              #'3': 'Tabla comparativa', 
-              #'4': 'Ambas'
              }
 
     tipos = {
