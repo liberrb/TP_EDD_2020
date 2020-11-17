@@ -6,12 +6,9 @@ def main():
     menu = Menu()
     menu.ejecutar()
     target = menu.get_target()
-    # scraper = Scraper()
-    # scraper.buscar(target)
 
 def out():
     print('Para volver a ejecutar ingrese: python tp_yarara.py')
-
 if __name__ == '__main__':
     main()
     out()

@@ -12,13 +12,11 @@ from difflib import SequenceMatcher as SM
 import difflib
 
 class ItemsAuxiliar():
-    def __init__(self,title,categoria,price,link,fecha,market,promedio,cantidad):
+    def __init__(self,title,categoria,price,fecha,promedio,cantidad):
         self.title = title
         self.categoria = categoria
         self.price = price
-        self.link = link
         self.fecha = fecha
-        self.market = market
         self.promedio = promedio
         self.cantidad = cantidad
 
@@ -95,7 +93,27 @@ class Procesador:
         filename = path + nombreItem.replace(" ","_") +  "." + "html"
 
         html_str = ""
-        if(nombreItem != "ComparativaOrdenada"):
+
+        if (nombreItem == "Unicos"):
+            html_str = """
+            <table border=1>
+                <tr>
+                <th>Title</th>
+                <th>Categoria</th>
+                <th>Price</th>
+                <th>market</th>
+                <th>Fecha</th>
+                </tr>
+                <indent>""" 
+            for item in lista:
+                html_str +="""<tr>"""
+                html_str +="""<td>"""   + str(item.get('title')) + """</td>"""
+                html_str +="""<td>"""   + str(item.get('categoria')) + """</td>"""
+                html_str +="""<td>"""   + str(item.get('price')) + """</td>"""
+                html_str +="""<td>"""   + str(item.get('market')) + """</td>"""
+                html_str +="""<td>"""   + str(item.get('fecha')) + """</td>"""
+                html_str +="""</tr>"""
+        elif(nombreItem != "ComparativaOrdenada"):
             html_str = """
             <table border=1>
                 <tr>
@@ -121,7 +139,6 @@ class Procesador:
                 <th>Title</th>
                 <th>Categoria</th>
                 <th>Price</th>
-                <th>Link</th>
                 <th>Fecha</th>
                 <th>Promedio</th>
                 <th>Cantidad</th>
@@ -132,7 +149,6 @@ class Procesador:
                 html_str +="""<td>"""   + str(item.title) + """</td>"""
                 html_str +="""<td>"""   + str(item.categoria) + """</td>"""
                 html_str +="""<td>"""   + str(item.price) + """</td>"""
-                html_str +="""<td>"""   + str(item.link) + """</td>"""
                 html_str +="""<td>"""   + str(item.fecha) + """</td>"""
                 html_str +="""<td>"""   + str(item.promedio) + """</td>"""
                 html_str +="""<td>"""   + str(item.cantidad) + """</td>"""
@@ -144,13 +160,14 @@ class Procesador:
         Html_file.close()
 
     def tablaComparativa(self,tipo,modelo =""):
+        config = Config()
         resultado = []
         resultadoYaestan = []
         if(tipo == '1'):
             for item in self._miLista:
                 if(item.get('title') not in resultadoYaestan):
                     for producto in self._miLista:                   
-                        if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= 0.6):
+                        if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= config.get_exactitud() ):
                             resultado.append(producto)
                             resultadoYaestan.append(producto.get('title'))
                     if(len(resultado) > 0):
@@ -158,65 +175,57 @@ class Procesador:
                         self.guardarTablaHtmlComparativa(resultado,item.get('title'))
                     resultado.clear()    
         elif(tipo == '2'):
+            lista_aux = []
             for item in self._miLista:
-                if(item.get('title') not in resultadoYaestan):
-                    suma = 0
-                    for producto in self._miLista:                   
-                        if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= 0.6):
-                            suma += producto.get('price')
-                            resultado.append(producto)
-                            resultadoYaestan.append(producto.get('title'))
-                    cantidadItems = len(resultado)
-                    if(cantidadItems > 0):
-                        suma += item.get('price')
-                        aGuardar = ItemsAuxiliar(item.get('title'),item.get('categoria'),item.get('price'),item.get('link'),item.get('fecha'),item.get('market'),suma/cantidadItems,cantidadItems)
-                        resultado.append(aGuardar)
-            self.guardarTablaHtmlComparativa(resultado,"ComparativaOrdenada")
-            resultado.clear()    
+                suma = 0
+                cantidadItems = 0
+                if item.get('price') != 0:
+                    if(item.get('title') not in resultadoYaestan):
+                        for producto in self._miLista:
+                            if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= config.get_exactitud_2() ):
+                                suma += producto.get('price')
+                                resultado.append(producto)
+                                resultadoYaestan.append(producto.get('title'))
+                        cantidadItems = len(resultado)
+                        if(cantidadItems > 0):
+                            cantidadItems += 1
+                            suma += item.get('price')
+                            aGuardar = ItemsAuxiliar(item.get('title'),item.get('categoria'),item.get('price'),item.get('fecha'),suma/cantidadItems,cantidadItems)
+                            lista_aux.append(aGuardar)
+                resultado.clear()
+            self.guardarTablaHtmlComparativa(lista_aux,"ComparativaOrdenada")
+            lista_aux.clear() 
+              
         else:
+            resultado_aux = []
             for item in self._miLista:
                 for producto in self._miLista:                   
-                    if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= 0.6):
-                        resultado.append(producto)
-                    if(len(resultado) == 0):
-                        resultado.append(item)
+                    if(item != producto and SM(None, item.get('title').lower(), producto.get('title').lower()).ratio() >= config.get_exactitud() ):
+                        resultado_aux.append(producto)
+                if(len(resultado_aux) == 0):
+                    resultado.append(item)
+                resultado_aux.clear()
             self.guardarTablaHtmlComparativa(resultado,"Unicos")                   
 
-    def estadisticas(self,tipo):
-            tienda1 = []
-            tienda2 = []
-            tienda3 = []
-            tienda4 = []
-            for item in self._miLista:
-                if(item.get('market') == 'casadelaudio'):
-                    tienda1.append(item)
-                elif(item.get('market') == 'musimundo'):
-                    tienda2.append(item)
-                elif(item.get('market') == 'fravega'):
-                    tienda3.append(item) 
-                else:
-                    tienda4.append(item)
 
 
 
-
-
-s1 = 'Celular Libre Samsung Galaxy S20 Ultra Gris'
-s2 = 'CELULAR LIBRE SAMSUNG S20 ULTRA GRIS'
+s1 = 'CELULAR LIBERADO SAMSUNG GALAXY S20 ULTRA NEGRO'
+s2 = 'Celular Libre Samsung Galaxy A51 Negro'
 print(SM(None, s1.lower(), s2.lower()).ratio())
 
 
-lista1 = ["Celular Libre Samsung Galaxy S20 Ultra Gris"]
-lista2 = ["Celular Libre Samsung S20 6.2 8/128 Gris",
-          "CELULAR LIBRE SAMSUNG S20 ULTRA GRIS",
-          "CELULAR SAMSUNG GALAXY S20+ GRIS",
-          "CELULAR SAMSUNG GALAXY S20 AZUL",
-          "Funda Samsung LED Back Cover S10 White",
-          "Celular Libre Samsung S10 ",]
+# lista1 = ["Celular Libre Samsung Galaxy S20 Ultra Gris"]
+# lista2 = ["Celular Libre Samsung S20 6.2 8/128 Gris",
+#           "CELULAR LIBRE SAMSUNG S20 ULTRA GRIS",
+#           "CELULAR SAMSUNG GALAXY S20+ GRIS",
+#           "CELULAR SAMSUNG GALAXY S20 AZUL",
+#           "Funda Samsung LED Back Cover S10 White",
+#           "Celular Libre Samsung S10 ",]
 
-d = difflib.Differ()
+# d = difflib.Differ()
 
-for item in lista1:
-    for producto in lista2:                   
-        if(item != producto and SM(None, item.lower(), producto.lower()).ratio() >= 0.6):
-            print(producto)
+# for item in lista1:
+#     for producto in lista2:                   
+#         if(item != producto and SM(None, item.lower(), producto.lower()).ratio() >= 0.6):
+#             print(producto)

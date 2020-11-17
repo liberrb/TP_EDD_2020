@@ -21,6 +21,7 @@ class Config():
     extras = {
               '1': 'Estadísticas por modelo',
               '2': 'Estadísticas por promedio',
+              '3': 'Unicos por tienda',
               #'3': 'Tabla comparativa', 
               #'4': 'Ambas'
              }
@@ -38,6 +39,8 @@ class Config():
                   'musimundo' : 'https://www.musimundo.com/'
                  }
 
+    porcetanje_exactitud = 0.85
+    porcetanje_exactitud_2 = 0.95
 
     def get_path(self):
         return self.directorio_descarga
@@ -56,5 +59,11 @@ class Config():
 
     def get_start_url(self):
         return self.start_urls
+    
+    def get_exactitud(self):
+        return self.porcetanje_exactitud
+    
+    def get_exactitud_2(self):
+        return self.porcetanje_exactitud_2
 
 

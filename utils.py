@@ -9,10 +9,6 @@ class Utils():
         return target.lower() == title.lower()
 
     def tipo_busqueda_2(self, target, title):
-        # target = self.stop_words(target)
-        # title = self.stop_words(title)
-        # return all(item in target for item in title)
-
         target = self.stop_words(target)
         title = self.stop_words(title)
         equals = set(target) & set(title)
