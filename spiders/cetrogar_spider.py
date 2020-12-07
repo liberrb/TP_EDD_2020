@@ -33,7 +33,6 @@ class CetrogarSpiderSpider(scrapy.Spider):
         for product in response.xpath("//ol[@class='products list items product-items  defer-images-grid']/li"):
             title = product.xpath("normalize-space(.//a[@class='product-item-link']/text())").get()
             precio = product.xpath('.//span[@class="price-container price-final_price tax weee"]/span[@data-price-type="finalPrice"]/span[@class="price"]/text()').get()
-            #title = titulo.strip().lower()
             
             #trabajo con los precios
             price = 0
@@ -47,7 +46,7 @@ class CetrogarSpiderSpider(scrapy.Spider):
             dt_format = now.strftime("%d/%m/%Y %H:%M:%S")
             
             #link del producto
-            product_link = response.xpath(".//a[@class='product-item-link']/@href").get()
+            product_link = product.xpath(".//a[@class='product-item-link']/@href").get()
 
             entra_yield = False
             

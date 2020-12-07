@@ -205,26 +205,3 @@ class Procesador:
                     resultado.append(item)
                 resultado_aux.clear()
             self.guardarTablaHtmlComparativa(resultado,"Unicos")                   
-
-
-
-
-s1 = 'CELULAR LIBERADO SAMSUNG GALAXY S20 ULTRA NEGRO'
-s2 = 'Celular Libre Samsung Galaxy A51 Negro'
-print(SM(None, s1.lower(), s2.lower()).ratio())
-
-
-# lista1 = ["Celular Libre Samsung Galaxy S20 Ultra Gris"]
-# lista2 = ["Celular Libre Samsung S20 6.2 8/128 Gris",
-#           "CELULAR LIBRE SAMSUNG S20 ULTRA GRIS",
-#           "CELULAR SAMSUNG GALAXY S20+ GRIS",
-#           "CELULAR SAMSUNG GALAXY S20 AZUL",
-#           "Funda Samsung LED Back Cover S10 White",
-#           "Celular Libre Samsung S10 ",]
-
-# d = difflib.Differ()
-
-# for item in lista1:
-#     for producto in lista2:                   
-#         if(item != producto and SM(None, item.lower(), producto.lower()).ratio() >= 0.6):
-#             print(producto)

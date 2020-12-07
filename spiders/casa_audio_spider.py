@@ -33,9 +33,7 @@ class CasaDelAudioSpider(scrapy.Spider):
             title = product.xpath('normalize-space(.//input/@data-pname)').get()
 
             #armo el precio
-            #moneda = product.xpath('./div[@class="box_data"]/a/div[@class="price_wrapper"]/div[@class="hidden-xs price"]/strong/text()').get()
             valor = product.xpath('./div[@class="box_data"]/a/div[@class="price_wrapper"]/div[@class="hidden-xs price"]/strong/span/text()').get()
-            #price = moneda + valor
             price = float(valor)
 
             #fecha y hora de extraccion
